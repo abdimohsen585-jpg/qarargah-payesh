@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#123b35">
+<title>سامانه پایش قرارگاه جنگ اقتصادی</title>
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{--ink:#172b28;--muted:#71817d;--bg:#f3f6f4;--card:#fff;--green:#14584d;--green2:#e4f1ec;--line:#e5ece8;--amber:#a76516;--red:#a33d38;--shadow:0 8px 24px rgba(18,59,53,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,"Segoe UI",sans-serif;font-size:14px}
+.app{max-width:560px;margin:auto;min-height:100vh;padding-bottom:88px}
+header{background:linear-gradient(135deg,#123b35,#1d6658);color:white;padding:22px 18px 24px;border-radius:0 0 26px 26px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}.brand{font-size:15px;font-weight:700}.sub{font-size:11px;opacity:.78;margin-top:5px}
+.avatar{width:38px;height:38px;border-radius:13px;background:#ffffff22;display:grid;place-items:center;font-size:18px}
+.welcome{margin-top:24px;font-size:20px;font-weight:700}.welcome small{display:block;font-size:12px;font-weight:400;opacity:.8;margin-top:7px}
+main{padding:17px 15px}.section-head{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 11px}.section-head h2{font-size:15px;margin:0}.muted{color:var(--muted);font-size:11px}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric,.panel,.module{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:14px;box-shadow:var(--shadow)}
+.metric .label{color:var(--muted);font-size:11px}.metric strong{display:block;font-size:23px;margin:8px 0 4px;color:var(--green)}.metric small{font-size:10px;color:var(--muted)}
+.notice{background:#fff5e8;border:1px solid #f3dfc4;color:#86541a;padding:10px 12px;border-radius:12px;font-size:11px;line-height:1.8;margin-top:13px}
+.modules{display:grid;grid-template-columns:1fr 1fr;gap:10px}.module{display:flex;align-items:center;gap:11px;text-align:right;color:var(--ink);font:inherit;cursor:pointer;min-height:76px}.module .ico{width:40px;height:40px;display:grid;place-items:center;border-radius:13px;background:var(--green2);font-size:20px}.module b{display:block;font-size:12px}.module small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.panel{padding:0;overflow:hidden}.rowitem{padding:13px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.rowitem:last-child{border:0}.dot{width:8px;height:8px;border-radius:50%;background:#d59b42;flex:none}.rowitem b{font-size:12px}.rowitem small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.tag{margin-right:auto;font-size:10px;background:#fff2df;color:#93601c;padding:5px 8px;border-radius:20px;white-space:nowrap}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:560px;margin:auto;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
+nav button{border:0;background:none;color:var(--muted);font:inherit;font-size:10px;display:grid;gap:4px;justify-items:center;min-width:55px;cursor:pointer}nav button span{font-size:19px}nav button.active{color:var(--green);font-weight:bold}
+.page{display:none}.page.active{display:block}.back{border:0;background:none;color:var(--green);font:inherit;font-weight:bold;padding:8px 0;cursor:pointer}
+.field{margin:12px 0}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px;background:#fff;font:inherit;color:var(--ink)}textarea{min-height:76px;resize:vertical}
+.primary{width:100%;border:0;border-radius:12px;background:var(--green);color:white;padding:13px;font:inherit;font-weight:bold;margin-top:8px;cursor:pointer}
+.province-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.province{padding:11px;background:white;border:1px solid var(--line);border-radius:10px;font-size:11px}
+.result{display:none;margin-top:12px;padding:11px;border-radius:10px;background:var(--green2);color:var(--green);font-size:11px;line-height:1.8}
+footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="top"><div><div class="brand">سامانه پایش قرارگاه جنگ اقتصادی</div><div class="sub">پنل مدیریتی یکپارچه · نسخه نمایشی</div></div><div class="avatar">☰</div></div>
+ <div class="welcome">نمای کلی فعالیت‌ها<small>گزارش آزمایشی در سطح کشور</small></div>
+</header>
+<main>
+<section id="home" class="page active">
+ <div class="section-head"><h2>شاخص‌های کلیدی</h2><span class="muted">داده نمونه</span></div>
+ <div class="metrics">
+  <div class="metric"><span class="label">استان‌های تحت پوشش</span><strong>۳۱</strong><small>تمام استان‌ها</small></div>
+  <div class="metric"><span class="label">فرصت‌های شغلی ثبت‌شده</span><strong>۱٬۲۸۰</strong><small>عدد نمایشی</small></div>
+  <div class="metric"><span class="label">بسته‌های معیشتی</span><strong>۸٬۴۵۰</strong><small>عدد نمایشی</small></div>
+  <div class="metric"><span class="label">مصوبات در حال پیگیری</span><strong>۷۶</strong><small>عدد نمایشی</small></div>
+ </div>
+ <div class="notice">این نسخه صرفاً نمونه نمایشی است. اعداد ساختگی‌اند و اطلاعات فرم‌ها به سرور ارسال نمی‌شوند. اطلاعات واقعی یا محرمانه وارد نکنید.</div>
+ <div class="section-head"><h2>دسترسی سریع</h2><span class="muted">انتخاب ماژول</span></div>
+ <div class="modules">
+  <button class="module" onclick="openPage('employment')"><span class="ico">👥</span><span><b>اشتغال و کارآفرینی</b><small>ثبت و پایش فرصت‌ها</small></span></button>
+  <button class="module" onclick="openPage('relief')"><span class="ico">📦</span><span><b>بسته‌های معیشتی</b><small>توزیع و تحویل</small></span></button>
+  <button class="module" onclick="openPage('meetings')"><span class="ico">🗓️</span><span><b>جلسات و مصوبات</b><small>تعهدات و پیگیری</small></span></button>
+  <button class="module" onclick="openPage('exhibitions')"><span class="ico">🏪</span><span><b>نمایشگاه و بازاررسانی</b><small>رویدادها و فروش</small></span></button>
+  <button class="module" onclick="openPage('bottlenecks')"><span class="ico">⚠️</span><span><b>گلوگاه‌ها</b><small>ثبت مشکل و اقدام</small></span></button>
+  <button class="module" onclick="openPage('continuity')"><span class="ico">🛡️</span><span><b>استمرار خدمات</b><small>آمادگی و بحران</small></span></button>
+ </div>
+ <div class="section-head"><h2>موارد نیازمند پیگیری</h2><span class="muted">نمونه</span></div>
+ <div class="panel">
+  <div class="rowitem"><i class="dot"></i><div><b>تکمیل گزارش اشتغال شهرستان</b><small>استان نمونه · مهلت: ۱۴۰۵/۰۸/۱۵</small></div><span class="tag">در انتظار</span></div>
+  <div class="rowitem"><i class="dot"></i><div><b>پیگیری مصوبه بازاررسانی</b><small>دستگاه اجرایی · مهلت: ۱۴۰۵/۰۸/۱۸</small></div><span class="tag">پیگیری</span></div>
+  <div class="rowitem"><i class="dot"></i><div><b>برنامه جایگزین توزیع</b><small>مدیریت بحران · مهلت: ۱۴۰۵/۰۸/۲۰</small></div><span class="tag">نیازمند اقدام</span></div>
+ </div>
+</section>
+
+<section id="employment" class="page">
+ <button class="back" onclick="openPage('home')">← بازگشت به داشبورد</button><div class="section-head"><h2>ثبت فعالیت اشتغال</h2></div>
+ <div class="panel" style="padding:14px">
+  <div class="field"><label>استان</label><select><option>انتخاب استان</option><option>تهران</option><option>اصفهان</option><option>خراسان رضوی</option><option>فارس</option></select></div>
+  <div class="field"><label>شهرستان</label><input placeholder="نام شهرستان"></div>
+  <div class="field"><label>عنوان طرح یا فعالیت</label><input placeholder="عنوان فعالیت"></div>
+  <div class="field"><label>تعداد فرصت شغلی</label><input type="number" min="0" placeholder="مثلاً ۱۲"></div>
+  <div class="field"><label>وضعیت</label><select><option>در حال اجرا</option><option>پایان‌یافته</option><option>نیازمند پیگیری</option></select></div>
+  <button class="primary" onclick="demoSave('employment-result')">ثبت آزمایشی</button><div id="employment-result" class="result">در نسخه نمایشی، اطلاعات فقط در همین صفحه نمایش داده می‌شود و به سرور ارسال نشده است.</div>
+ </div>
+</section>
+
+<section id="relief" class="page">
+ <button class="back" onclick="openPage('home')">← بازگشت به داشبورد</button><div class="section-head"><h2>توزیع بسته‌های معیشتی</h2></div>
+ <div class="panel" style="padding:14px">
+  <div class="field"><label>استان / شهرستان</label><input placeholder="مثلاً تهران، ری"></div>
+  <div class="field"><label>نوع بسته</label><select><option>بسته معیشتی</option><option>اقلام ضروری</option><option>بسته مناسبتی</option></select></div>
+  <div class="field"><label>تعداد بسته</label><input type="number" placeholder="تعداد"></div>
+  <div class="field"><label>تعداد تحویل‌شده</label><input type="number" placeholder="تعداد تحویل"></div>
+  <button class="primary" onclick="demoSave('relief-result')">ثبت آزمایشی</button><div id="relief-result" class="result">ثبت نمایشی انجام شد؛ داده‌ای ذخیره یا ارسال نشده است.</div>
+ </div>
+</section>
+
+<section id="meetings" class="page">
+ <button class="back" onclick="openPage('home')">← بازگشت به داشبورد</button><div class="section-head"><h2>جلسات و مصوبات</h2></div>
+ <div class="panel" style="padding:14px">
+  <div class="field"><label>عنوان جلسه</label><input placeholder="عنوان جلسه با دستگاه اجرایی"></div>
+  <div class="field"><label>تاریخ جلسه</label><input type="date"></div>
+  <div class="field"><label>موضوع / مصوبه</label><textarea placeholder="شرح مصوبه و تعهدات"></textarea></div>
+  <div class="field"><label>مسئول پیگیری</label><input placeholder="واحد یا مسئول"></div>
+  <button class="primary" onclick="demoSave('meeting-result')">ثبت آزمایشی</button><div id="meeting-result" class="result">اطلاعات صرفاً برای نمایش فرم است و به سامانه مرکزی ارسال نشده است.</div>
+ </div>
+</section>
+
+<section id="exhibitions" class="page">
+ <button class="back" onclick="openPage('home')">← بازگشت به داشبورد</button><div class="section-head"><h2>نمایشگاه و بازاررسانی</h2></div>
+ <div class="panel" style="padding:14px">
+  <div class="field"><label>نام رویداد / بازار</label><input placeholder="نام نمایشگاه یا بازارچه"></div>
+  <div class="field"><label>استان و محل برگزاری</label><input placeholder="استان، شهر، محل"></div>
+  <div class="field"><label>تاریخ شروع</label><input type="date"></div>
+  <div class="field"><label>تعداد تولیدکنندگان مشارکت‌کننده</label><input type="number" placeholder="تعداد"></div>
+  <button class="primary" onclick="demoSave('exhibition-result')">ثبت آزمایشی</button><div id="exhibition-result" class="result">این فرم نمونه است و اطلاعات در سرور ثبت نمی‌شود.</div>
+ </div>
+</section>
+
+<section id="bottlenecks" class="page">
+ <button class="back" onclick="openPage('home')">← بازگشت به داشبورد</button><div class="section-head"><h2>ثبت گلوگاه و مشکل</h2></div>
+ <div class="panel" style="padding:14px">
+  <div class="field"><label>حوزه مشکل</label><select><option>اشتغال</option><option>توزیع معیشتی</option><option>تأمین و لجستیک</option><option>هماهنگی دستگاه‌ها</option><option>بازاررسانی</option></select></div>
+  <div class="field"><label>استان / شهرستان</label><input placeholder="محدوده جغرافیایی"></div>
+  <div class="field"><label>شرح گلوگاه</label><textarea placeholder="شرح مسئله و اثر آن"></textarea></div>
+  <div class="field"><label>اقدام پیشنهادی</label><textarea placeholder="راهکار یا اقدام موردنیاز"></textarea></div>
+  <button class="primary" onclick="demoSave('bottleneck-result')">ثبت آزمایشی</button><div id="bottleneck-result" class="result">گزارش نمونه نمایش داده شد؛ برای پیگیری واقعی باید نسخه سروری راه‌اندازی شود.</div>
+ </div>
+</section>
+
+<section id="continuity" class="page">
+ <button class="back" onclick="openPage('home')">← بازگشت به داشبورد</button><div class="section-head"><h2>استمرار خدمات و مدیریت بحران</h2></div>
+ <div class="panel" style="padding:14px">
+  <div class="field"><label>نوع سناریو</label><select><option>اختلال در زنجیره تأمین</option><option>اختلال حمل‌ونقل</option><option>قطعی ارتباطات</option><option>بحران طبیعی</option></select></div>
+  <div class="field"><label>استان / محدوده</label><input placeholder="محدوده اجرای برنامه"></div>
+  <div class="field"><label>خدمت حیاتی</label><input placeholder="خدمت موردنیاز برای استمرار"></div>
+  <div class="field"><label>اقدام جایگزین</label><textarea placeholder="شرح برنامه جایگزین و مسئول اجرا"></textarea></div>
+  <button class="primary" onclick="demoSave('continuity-result')">ثبت آزمایشی</button><div id="continuity-result" class="result">فرم نمایشی است؛ برنامه واقعی بحران باید با مسئولان ذی‌ربط تأیید شود.</div>
+ </div>
+</section>
+
+<section id="provinces" class="page">
+ <div class="section-head"><h2>پوشش استانی</h2><span class="muted">۳۱ استان</span></div>
+ <div class="province-grid" id="province-list"></div>
+</section>
+<section id="reports" class="page">
+ <div class="section-head"><h2>گزارش‌ها</h2></div>
+ <div class="panel">
+  <div class="rowitem"><div><b>گزارش عملکرد ملی</b><small>تجمیع شاخص‌های آزمایشی</small></div><span class="tag">نمونه</span></div>
+  <div class="rowitem"><div><b>گزارش مقایسه استانی</b><small>مقایسه وضعیت استان‌ها</small></div><span class="tag">نمونه</span></div>
+  <div class="rowitem"><div><b>گزارش مصوبات معوق</b><small>پیگیری تعهدات و مهلت‌ها</small></div><span class="tag">نمونه</span></div>
+ </div>
+ <div class="notice">برای جلوگیری از برداشت اشتباه، همه گزارش‌ها در این نسخه صرفاً نمایشی و فاقد داده واقعی هستند.</div>
+</section>
+<footer>نسخه نمایشی رابط کاربری · سامانه پایش قرارگاه جنگ اقتصادی</footer>
+</main>
+<nav>
+ <button class="active" data-page="home" onclick="openPage('home',this)"><span>⌂</span>خانه</button>
+ <button data-page="provinces" onclick="openPage('provinces',this)"><span>◈</span>استان‌ها</button>
+ <button data-page="reports" onclick="openPage('reports',this)"><span>▤</span>گزارش‌ها</button>
+ <button data-page="bottlenecks" onclick="openPage('bottlenecks',this)"><span>⚑</span>پیگیری</button>
+</nav>
+</div>
+<script>
+const provinces=['آذربایجان شرقی','آذربایجان غربی','اردبیل','اصفهان','البرز','ایلام','بوشهر','تهران','چهارمحال و بختیاری','خراسان جنوبی','خراسان رضوی','خراسان شمالی','خوزستان','زنجان','سمنان','سیستان و بلوچستان','فارس','قزوین','قم','کردستان','کرمان','کرمانشاه','کهگیلویه و بویراحمد','گلستان','گیلان','لرستان','مازندران','مرکزی','هرمزگان','همدان','یزد'];
+document.getElementById('province-list').innerHTML=provinces.map((p,i)=>`<div class="province">${String(i+1).padStart(2,'۰')} · ${p}</div>`).join('');
+function openPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');else{let b=document.querySelector(`nav button[data-page="${id}"]`);if(b)b.classList.add('active')}window.scrollTo(0,0)}
+function demoSave(id){document.getElementById(id).style.display='block'}
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
