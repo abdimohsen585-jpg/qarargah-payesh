@@ -7,6 +7,7 @@
 <title>سامانه پایش قرارگاه جنگ اقتصادی</title>
 <link rel="manifest" href="manifest.webmanifest">
 <style>
+.login-overlay{position:fixed;inset:0;background:rgba(8,25,22,.82);z-index:20;display:grid;place-items:center;padding:20px}.login-card{width:min(100%,420px);background:#fff;border-radius:18px;padding:22px;box-shadow:0 15px 45px #0004}.login-card h2{margin:0 0 8px;font-size:18px}.login-card p{font-size:12px;line-height:1.9;color:#71817d}.login-card input{width:100%;padding:13px;border:1px solid #e5ece8;border-radius:10px;margin:7px 0 12px;font:inherit}.login-error{color:#a33d38;font-size:12px;min-height:22px}.record-actions{display:flex;gap:8px;margin-top:9px}.record-actions button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 10px;font:inherit;font-size:11px;color:var(--green)}.record-actions button.delete{color:var(--red)}.record-card{padding:13px;border-bottom:1px solid var(--line);font-size:12px}.record-card small{display:block;color:var(--muted);margin-top:5px;line-height:1.7}
 :root{--ink:#172b28;--muted:#71817d;--bg:#f3f6f4;--card:#fff;--green:#14584d;--green2:#e4f1ec;--line:#e5ece8;--amber:#a76516;--red:#a33d38;--shadow:0 8px 24px rgba(18,59,53,.07)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,"Segoe UI",sans-serif;font-size:14px}
 .app{max-width:560px;margin:auto;min-height:100vh;padding-bottom:88px}
@@ -31,9 +32,19 @@ footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
 </style>
 </head>
 <body>
+<div class="login-overlay" id="login-overlay">
+ <div class="login-card">
+  <h2>ورود به نسخه آزمایشی</h2>
+  <p>برای ثبت و مشاهده گزارش‌های آزمایشی وارد شوید. از اطلاعات ساختگی استفاده کنید.</p>
+  <label>نام کاربری</label><input id="login-username" autocomplete="username" value="demo-admin">
+  <label>رمز عبور آزمایشی</label><input id="login-password" type="password" autocomplete="current-password" placeholder="رمزی که هنگام استقرار در Render تعیین کردید">
+  <button class="primary" onclick="login()">ورود</button>
+  <div class="login-error" id="login-error"></div>
+ </div>
+</div>
 <div class="app">
 <header>
- <div class="top"><div><div class="brand">سامانه پایش قرارگاه جنگ اقتصادی</div><div class="sub">پنل مدیریتی یکپارچه · نسخه نمایشی</div></div><div class="avatar">☰</div></div>
+ <div class="top"><div><div class="brand">سامانه پایش قرارگاه جنگ اقتصادی</div><div class="sub">پنل مدیریتی یکپارچه · نسخه آزمایشی متصل به پایگاه داده</div></div><button class="avatar" onclick="logout()" title="خروج">خروج</button></div>
  <div class="welcome">نمای کلی فعالیت‌ها<small>گزارش آزمایشی در سطح کشور</small></div>
 </header>
 <main>
@@ -45,7 +56,7 @@ footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
   <div class="metric"><span class="label">بسته‌های معیشتی</span><strong>۸٬۴۵۰</strong><small>عدد نمایشی</small></div>
   <div class="metric"><span class="label">مصوبات در حال پیگیری</span><strong>۷۶</strong><small>عدد نمایشی</small></div>
  </div>
- <div class="notice">این نسخه صرفاً نمونه نمایشی است. اعداد ساختگی‌اند و اطلاعات فرم‌ها به سرور ارسال نمی‌شوند. اطلاعات واقعی یا محرمانه وارد نکنید.</div>
+ <div class="notice">این نسخه آزمایشی به پایگاه داده متصل است. فقط داده ساختگی وارد کنید؛ اطلاعات واقعی یا محرمانه وارد نکنید.</div>
  <div class="section-head"><h2>دسترسی سریع</h2><span class="muted">انتخاب ماژول</span></div>
  <div class="modules">
   <button class="module" onclick="openPage('employment')"><span class="ico">👥</span><span><b>اشتغال و کارآفرینی</b><small>ثبت و پایش فرصت‌ها</small></span></button>
@@ -71,7 +82,7 @@ footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
   <div class="field"><label>عنوان طرح یا فعالیت</label><input placeholder="عنوان فعالیت"></div>
   <div class="field"><label>تعداد فرصت شغلی</label><input type="number" min="0" placeholder="مثلاً ۱۲"></div>
   <div class="field"><label>وضعیت</label><select><option>در حال اجرا</option><option>پایان‌یافته</option><option>نیازمند پیگیری</option></select></div>
-  <button class="primary" onclick="demoSave('employment-result')">ثبت آزمایشی</button><div id="employment-result" class="result">در نسخه نمایشی، اطلاعات فقط در همین صفحه نمایش داده می‌شود و به سرور ارسال نشده است.</div>
+  <button class="primary" onclick="saveRecord('employment')">ثبت در پایگاه داده</button><div id="employment-result" class="result">اطلاعات این فرم پس از ثبت در پایگاه داده آزمایشی ذخیره می‌شود.</div>
  </div>
 </section>
 
@@ -82,7 +93,7 @@ footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
   <div class="field"><label>نوع بسته</label><select><option>بسته معیشتی</option><option>اقلام ضروری</option><option>بسته مناسبتی</option></select></div>
   <div class="field"><label>تعداد بسته</label><input type="number" placeholder="تعداد"></div>
   <div class="field"><label>تعداد تحویل‌شده</label><input type="number" placeholder="تعداد تحویل"></div>
-  <button class="primary" onclick="demoSave('relief-result')">ثبت آزمایشی</button><div id="relief-result" class="result">ثبت نمایشی انجام شد؛ داده‌ای ذخیره یا ارسال نشده است.</div>
+  <button class="primary" onclick="saveRecord('relief')">ثبت در پایگاه داده</button><div id="relief-result" class="result">گزارش پس از ثبت در پایگاه داده آزمایشی ذخیره می‌شود.</div>
  </div>
 </section>
 
@@ -93,7 +104,7 @@ footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
   <div class="field"><label>تاریخ جلسه</label><input type="date"></div>
   <div class="field"><label>موضوع / مصوبه</label><textarea placeholder="شرح مصوبه و تعهدات"></textarea></div>
   <div class="field"><label>مسئول پیگیری</label><input placeholder="واحد یا مسئول"></div>
-  <button class="primary" onclick="demoSave('meeting-result')">ثبت آزمایشی</button><div id="meeting-result" class="result">اطلاعات صرفاً برای نمایش فرم است و به سامانه مرکزی ارسال نشده است.</div>
+  <button class="primary" onclick="saveRecord('meetings')">ثبت در پایگاه داده</button><div id="meeting-result" class="result">اطلاعات این فرم در پایگاه داده آزمایشی ذخیره می‌شود.</div>
  </div>
 </section>
 
@@ -104,7 +115,7 @@ footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
   <div class="field"><label>استان و محل برگزاری</label><input placeholder="استان، شهر، محل"></div>
   <div class="field"><label>تاریخ شروع</label><input type="date"></div>
   <div class="field"><label>تعداد تولیدکنندگان مشارکت‌کننده</label><input type="number" placeholder="تعداد"></div>
-  <button class="primary" onclick="demoSave('exhibition-result')">ثبت آزمایشی</button><div id="exhibition-result" class="result">این فرم نمونه است و اطلاعات در سرور ثبت نمی‌شود.</div>
+  <button class="primary" onclick="saveRecord('exhibitions')">ثبت در پایگاه داده</button><div id="exhibition-result" class="result">اطلاعات این فرم در پایگاه داده آزمایشی ذخیره می‌شود.</div>
  </div>
 </section>
 
@@ -115,7 +126,7 @@ footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
   <div class="field"><label>استان / شهرستان</label><input placeholder="محدوده جغرافیایی"></div>
   <div class="field"><label>شرح گلوگاه</label><textarea placeholder="شرح مسئله و اثر آن"></textarea></div>
   <div class="field"><label>اقدام پیشنهادی</label><textarea placeholder="راهکار یا اقدام موردنیاز"></textarea></div>
-  <button class="primary" onclick="demoSave('bottleneck-result')">ثبت آزمایشی</button><div id="bottleneck-result" class="result">گزارش نمونه نمایش داده شد؛ برای پیگیری واقعی باید نسخه سروری راه‌اندازی شود.</div>
+  <button class="primary" onclick="saveRecord('bottlenecks')">ثبت در پایگاه داده</button><div id="bottleneck-result" class="result">گزارش پس از ثبت در پایگاه داده آزمایشی ذخیره می‌شود.</div>
  </div>
 </section>
 
@@ -126,7 +137,7 @@ footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
   <div class="field"><label>استان / محدوده</label><input placeholder="محدوده اجرای برنامه"></div>
   <div class="field"><label>خدمت حیاتی</label><input placeholder="خدمت موردنیاز برای استمرار"></div>
   <div class="field"><label>اقدام جایگزین</label><textarea placeholder="شرح برنامه جایگزین و مسئول اجرا"></textarea></div>
-  <button class="primary" onclick="demoSave('continuity-result')">ثبت آزمایشی</button><div id="continuity-result" class="result">فرم نمایشی است؛ برنامه واقعی بحران باید با مسئولان ذی‌ربط تأیید شود.</div>
+  <button class="primary" onclick="saveRecord('continuity')">ثبت در پایگاه داده</button><div id="continuity-result" class="result">فقط سناریوهای ساختگی ثبت کنید؛ این نسخه برای تصمیم‌گیری عملیاتی نیست.</div>
  </div>
 </section>
 
@@ -136,12 +147,9 @@ footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
 </section>
 <section id="reports" class="page">
  <div class="section-head"><h2>گزارش‌ها</h2></div>
- <div class="panel">
-  <div class="rowitem"><div><b>گزارش عملکرد ملی</b><small>تجمیع شاخص‌های آزمایشی</small></div><span class="tag">نمونه</span></div>
-  <div class="rowitem"><div><b>گزارش مقایسه استانی</b><small>مقایسه وضعیت استان‌ها</small></div><span class="tag">نمونه</span></div>
-  <div class="rowitem"><div><b>گزارش مصوبات معوق</b><small>پیگیری تعهدات و مهلت‌ها</small></div><span class="tag">نمونه</span></div>
- </div>
- <div class="notice">برای جلوگیری از برداشت اشتباه، همه گزارش‌ها در این نسخه صرفاً نمایشی و فاقد داده واقعی هستند.</div>
+ <button class="primary" onclick="refreshRecords()">به‌روزرسانی فهرست گزارش‌ها</button>
+ <div class="panel" id="records-list" style="margin-top:12px"><div class="record-card">برای مشاهده گزارش‌های ثبت‌شده، دکمه به‌روزرسانی را بزنید.</div></div>
+ <div class="notice">گزارش‌های این نسخه در PostgreSQL آزمایشی ذخیره می‌شوند. فقط از داده‌های ساختگی استفاده کنید.</div>
 </section>
 <footer>نسخه نمایشی رابط کاربری · سامانه پایش قرارگاه جنگ اقتصادی</footer>
 </main>
@@ -156,7 +164,19 @@ footer{text-align:center;color:var(--muted);font-size:9px;padding:18px}
 const provinces=['آذربایجان شرقی','آذربایجان غربی','اردبیل','اصفهان','البرز','ایلام','بوشهر','تهران','چهارمحال و بختیاری','خراسان جنوبی','خراسان رضوی','خراسان شمالی','خوزستان','زنجان','سمنان','سیستان و بلوچستان','فارس','قزوین','قم','کردستان','کرمان','کرمانشاه','کهگیلویه و بویراحمد','گلستان','گیلان','لرستان','مازندران','مرکزی','هرمزگان','همدان','یزد'];
 document.getElementById('province-list').innerHTML=provinces.map((p,i)=>`<div class="province">${String(i+1).padStart(2,'۰')} · ${p}</div>`).join('');
 function openPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');else{let b=document.querySelector(`nav button[data-page="${id}"]`);if(b)b.classList.add('active')}window.scrollTo(0,0)}
-function demoSave(id){document.getElementById(id).style.display='block'}
-if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+let editingRecordId=null;
+const categoryTitles={employment:'اشتغال و کارآفرینی',relief:'بسته‌های معیشتی',meetings:'جلسات و مصوبات',exhibitions:'نمایشگاه و بازاررسانی',bottlenecks:'گلوگاه‌ها',continuity:'استمرار خدمات'};
+async function api(url,options={}){const response=await fetch(url,{credentials:'same-origin',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest',...(options.headers||{})},...options});let data={};try{data=await response.json()}catch(e){}if(response.status===401){document.getElementById('login-overlay').style.display='grid';throw new Error(data.error||'ابتدا وارد سامانه شوید.')}if(!response.ok)throw new Error(data.error||'خطا در ارتباط با سرور');return data}
+async function login(){const error=document.getElementById('login-error');error.textContent='در حال بررسی...';try{await api('/api/login',{method:'POST',body:JSON.stringify({username:document.getElementById('login-username').value,password:document.getElementById('login-password').value})});document.getElementById('login-overlay').style.display='none';document.getElementById('login-password').value='';error.textContent='';await refreshRecords()}catch(e){error.textContent=e.message}}
+async function logout(){try{await api('/api/logout',{method:'POST',body:'{}'})}catch(e){}document.getElementById('login-overlay').style.display='grid'}
+function collectPayload(section){const payload={};section.querySelectorAll('.field').forEach((field,i)=>{const label=field.querySelector('label')?.textContent?.trim()||`فیلد ${i+1}`;const control=field.querySelector('input,select,textarea');if(control)payload[label]=control.value.trim()});return payload}
+function showResult(sectionId,message,isError=false){const result=document.getElementById(sectionId+'-result');if(result){result.textContent=message;result.style.display='block';result.style.background=isError?'#fff0ef':'var(--green2)';result.style.color=isError?'var(--red)':'var(--green)'}}
+async function saveRecord(category){const section=document.getElementById(category);const payload=collectPayload(section);const values=Object.values(payload).filter(Boolean);if(!values.length){showResult(category,'لطفاً حداقل یک فیلد را تکمیل کنید.',true);return}const title=values[0].slice(0,200)||categoryTitles[category];try{const url=editingRecordId?`/api/records/${editingRecordId}`:'/api/records';const method=editingRecordId?'PUT':'POST';await api(url,{method,body:JSON.stringify({category,title,payload})});showResult(category,editingRecordId?'گزارش ویرایش شد و در پایگاه داده ذخیره شد.':'گزارش با موفقیت در پایگاه داده ذخیره شد.');editingRecordId=null;const btn=section.querySelector('.primary');if(btn)btn.textContent='ثبت در پایگاه داده';await refreshRecords()}catch(e){showResult(category,e.message,true)}}
+function escapeText(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function refreshRecords(){const box=document.getElementById('records-list');if(!box)return;try{const data=await api('/api/records');if(!data.records.length){box.innerHTML='<div class="record-card">هنوز گزارشی ثبت نشده است.</div>';return}box.innerHTML=data.records.map(r=>`<div class="record-card"><b>${escapeText(r.title)}</b><small>${escapeText(categoryTitles[r.category]||r.category)} · شماره ${r.id}<br>${escapeText(new Date(r.created_at).toLocaleString('fa-IR'))}<br>${Object.entries(r.payload).map(([k,v])=>escapeText(k)+': '+escapeText(v)).join(' · ')}</small><div class="record-actions"><button onclick="editRecord(${r.id})">ویرایش</button><button class="delete" onclick="deleteRecord(${r.id})">حذف</button></div></div>`).join('')}catch(e){box.innerHTML=`<div class="record-card">${escapeText(e.message)}</div>`}}
+async function editRecord(id){try{const data=await api('/api/records');const record=data.records.find(r=>r.id===id);if(!record)return;const section=document.getElementById(record.category);if(!section)return;section.querySelectorAll('.field').forEach((field,i)=>{const label=field.querySelector('label')?.textContent?.trim();const control=field.querySelector('input,select,textarea');if(control&&label in record.payload)control.value=record.payload[label]});editingRecordId=id;const btn=section.querySelector('.primary');if(btn)btn.textContent='ذخیره ویرایش';showResult(record.category,'گزارش برای ویرایش بارگذاری شد.');openPage(record.category);window.scrollTo(0,0)}catch(e){alert(e.message)}}
+async function deleteRecord(id){if(!confirm('این گزارش آزمایشی حذف شود؟'))return;try{await api(`/api/records/${id}`,{method:'DELETE'});await refreshRecords()}catch(e){alert(e.message)}}
+(async()=>{try{const me=await api('/api/me');if(me.authenticated){document.getElementById('login-overlay').style.display='none';await refreshRecords()}}catch(e){}})();
+
 </script>
 </body></html>
